@@ -14,4 +14,4 @@ gene = f.getGene(id_in)
 
 prot_seq = gene.ProteinSequence()
 
-print seq.FormatFasta(name=gene.Name(), annotation = type_in)
+print prot_seq.FormatFasta(name=gene.Name(), annotation = type_in)
