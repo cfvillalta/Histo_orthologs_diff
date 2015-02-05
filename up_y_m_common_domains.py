@@ -2,10 +2,10 @@
 
 """
 Part I
-Input and find commpn pfam domains between Yeast and Mycelia pfam domain lists for gets up regulated log 1.5 fold or more.
+Input and find common pfam domains between Yeast and Mycelia pfam domain lists for gets up regulated log 1.5 fold or more.
 
 Part II
-Search through yeast and myclia sig up reg .cdt files and get gene names for genes that have the common domains found in Part I
+Search through yeast and mycelia sig up reg .cdt files and get gene names for genes that have the common domains found in Part I
 
 Part III
 Determine if the genes found in Part II are present in the list of genes sig up in yeast or mycelia.
@@ -28,6 +28,12 @@ if(__name__=="__main__"):
             shared_domains[domain]=[]
         else:
             pass
+
+#Part II
+    m_up_cdt = open("/home/cfvillalta/ThermalAdaptation/s13cMsort.cdt")
+    y_up_cdt = open("/home/cfvillalta/ThermalAdaptation/s13cYsort.cdt")
+
+
 #    x=0
 #    for domain in shared_domains:
 #        x=x+1
