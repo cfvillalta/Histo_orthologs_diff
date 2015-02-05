@@ -20,5 +20,19 @@ if(__name__=="__main__"):
     m_pfam = m_pfam_in.readlines()
     y_pfam = y_pfam_in.readlines()
 
-    print m_pfam
-    print y_pfam
+    shared_domains = {}
+    
+    for domain in m_pfam:
+        if any(domain in y for y in y_pfam):    
+            domain=domain.strip()
+            shared_domains[domain]=[]
+        else:
+            pass
+#    x=0
+#    for domain in shared_domains:
+#        x=x+1
+#        print domain
+
+#    print x
+#    print m_pfam
+#    print y_pfam
