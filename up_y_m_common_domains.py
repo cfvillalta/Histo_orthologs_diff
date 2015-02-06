@@ -14,8 +14,8 @@ Determine if the genes found in Part II are present in the list of genes sig up 
 #Part I
 
 if(__name__=="__main__"):
-    m_pfam_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_domains.txt")
-    y_pfam_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_domains.txt")
+    m_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_domains.txt")
+    y_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_domains.txt")
 
     m_pfam = m_pfam_in.readlines()
     y_pfam = y_pfam_in.readlines()
@@ -30,9 +30,9 @@ if(__name__=="__main__"):
             pass
     #PART II
     
-    cdt_in = open("/home/cfvillalta/ThermalAdaptation/s13cMsort.cdt")
-    up_m_genes_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
-    up_y_genes_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
+    cdt_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt")
+    up_m_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
+    up_y_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
 
     cdt_gene_pfam = {} 
     up_m_genes = {}
