@@ -34,32 +34,26 @@ if(__name__=="__main__"):
     up_m_genes_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
     up_y_genes_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
 
-    cdt = cdt_in.readlines()
-
     cdt_gene_pfam = {} 
-    up_m_genes = []
-    um_y_genes = []
+    up_m_genes = {}
+    up_y_genes = {}
 
-    for gene in up_m_genes_in.readlines():
-        gene = gene.strip()
-        up_m_genes.append(gene)
-
-    for gene in up_y_genes_in.readlines():
-        gene = gene.strip()
-        up_y_genes.append(gene)
-
-    for gene in cdt:
+    for gene in cdt_in.readlines():
         gene=gene.strip()
         gene_split = gene.split("\t")
         pfam_name_split = gene_split[14].split("|")
         cdt_gene_pfam[gene_split[2]]=pfam_name_split
     
-    
-#    x=0
-#    for domain in shared_domains:
-#        x=x+1
-#        print domain
+    for gene in up_m_genes_in.readlines():
+        gene = gene.strip()
+        if gene in cdt_gene_pfam:
+            up_m_genes[gene]=cdt_gene_pfam[gene]
 
-#    print x
-#    print m_pfam
-#    print y_pfam
+    for gene in up_y_genes_in.readlines():
+        gene = gene.strip()
+        if gene in cdt_gene_pfam:
+            up_y_genes[gene]=cdt_gene_pfam[gene]
+
+    
+    
+    
