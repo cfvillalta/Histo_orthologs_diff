@@ -54,6 +54,21 @@ if(__name__=="__main__"):
         if gene in cdt_gene_pfam:
             up_y_genes[gene]=cdt_gene_pfam[gene]
 
-    
-    
-    
+    #PART III
+    for domain in shared_domains:
+        d=0
+        for gene in up_m_genes:
+            for domain_name in up_m_genes[gene]:
+                if domain == domain_name:
+                    d = d+1
+                    #print '%s\t%s\t%s\tMycelia' %(domain,gene,domain_name)
+                    shared_domains[domain].append([gene,'mycelia'])
+        for gene in up_y_genes:
+            for domain_name in up_y_genes[gene]:
+                if domain == domain_name:
+                    d = d+1
+                    shared_domains[domain].append([gene,'yeast'])
+                    #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
+        shared_domains[domain].append(d)
+        d=0
+    print shared_domains
