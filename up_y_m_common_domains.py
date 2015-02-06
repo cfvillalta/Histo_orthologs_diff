@@ -71,4 +71,21 @@ if(__name__=="__main__"):
                     #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
         shared_domains[domain].append(d)
         d=0
-    print shared_domains
+    
+#        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
+
+        if shared_domains[domain][-1] >= 2:
+            list = range(0,shared_domains[domain][-1])
+            y = 0
+            m = 0
+            for gene in list:
+                if 'yeast' in shared_domains[domain][gene]:
+                    y = y +1
+                if 'mycelia' in shared_domains[domain][gene]:
+                    m = m +1
+
+            if y >=1 and m >=1:
+                print shared_domains[domain]
+                    
+            y = 0
+            m = 0
