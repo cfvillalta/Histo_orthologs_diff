@@ -74,6 +74,7 @@ if(__name__=="__main__"):
     
 #        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
 
+        final_domain_list = {}
         if shared_domains[domain][-1] >= 2:
             list = range(0,shared_domains[domain][-1])
             y = 0
@@ -84,8 +85,15 @@ if(__name__=="__main__"):
                 if 'mycelia' in shared_domains[domain][gene]:
                     m = m +1
 
-            if y >=1 and m >=1:
-                print shared_domains[domain]
+            if y>=1 and m >=1:
+                final_domain_list[domain]=shared_domains[domain]
+               # print "%s\t%s" %(domain,shared_domains[domain])
                     
             y = 0
             m = 0
+            for domain in final_domain_list:
+                del final_domain_list[domain][-1]
+                domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
+                for gene in final_domain_list[domain]:
+                    domain_out.write('%s\n' %("\t".join(gene)))
+                domain_out.close()
