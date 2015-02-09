@@ -20,14 +20,8 @@ if(__name__=="__main__"):
     m_pfam = set(i.strip() for i in m_pfam_in.readlines())
     y_pfam = set(i.strip() for i in y_pfam_in.readlines())
 
-    shared_domains = {}
+    shared_domains = dict((i,[]) for i in m_pfam.intersection(y_pfam))
     
-    for domain in m_pfam:
-        if any(domain in y for y in y_pfam):    
-            domain=domain.strip()
-            shared_domains[domain]=[]
-        else:
-            pass
     #PART II
     
     cdt_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt")
