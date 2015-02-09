@@ -63,14 +63,14 @@ if(__name__=="__main__"):
 #        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
 
         final_domain_list = {}
-        d = shared_domain_counts[domain]
-        if d >= 2:
+        if shared_domain_counts[domain] >= 2:
             y = 0
             m = 0
-            for gene in xrange(d):
-                if 'yeast' in shared_domains[domain][gene]:
+            for (gene, state) in shared_domains[domain]:
+                if state == 'yeast':
                     y = y +1
-                if 'mycelia' in shared_domains[domain][gene]:
+                else:
+                    assert(state == 'mycelia')
                     m = m +1
 
             if y>=1 and m >=1:
