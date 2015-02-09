@@ -10,7 +10,9 @@
 
 import sys
 import os
+from GenomeFactory import GenomeFactory
 
+#1.
 if(__name__=="__main__"):
     if(len(sys.argv) != 2):
         sys.stderr.write("""Usage: %s directory_in
@@ -21,6 +23,22 @@ if(__name__=="__main__"):
     else:
         dir_in = sys.argv[1]
         for filename in os.listdir(dir_in):
-            print filename
-    
+            file_name_split = filename.split("_")
+            domain = file_name_split[0]
+            #print domain
+            list_open = open("%s/%s" %(dir_in,filename), "rU")
+            gene_list = list_open.readlines()
+            #print gene_list
+            prot_fasta = open('%s%s_G217B_up.fa' %(dir_in,domain), 'w')
+            for gene in gene_list:
+                gene=gene.strip()
+                #print gene
+                gene_split = gene.split("\t")
+                #f=GenomeFactory(assembly_caching="eager")
+                f=GenomeFactory()
+                gene=f.getGene(gene_split[0])
+                prot_seq = gene.ProteinSequence()
+                prot_fasta.write(prot_seq.FormatFasta(name=gene.Name()))
+
+            prot_fasta.close()
 
