@@ -48,17 +48,15 @@ if(__name__=="__main__"):
     for domain in shared_domains:
         d=0
         for (gene, domains) in up_m_genes.items():
-            for domain_name in domains:
-                if domain == domain_name:
-                    d = d+1
-                    #print '%s\t%s\t%s\tMycelia' %(domain,gene,domain_name)
-                    shared_domains[domain].append([gene,'mycelia'])
+            if domain in domains:
+                d = d+1
+                #print '%s\t%s\t%s\tMycelia' %(domain,gene,domain_name)
+                shared_domains[domain].append([gene,'mycelia'])
         for (gene, domains) in up_y_genes.items():
-            for domain_name in domains:
-                if domain == domain_name:
-                    d = d+1
-                    shared_domains[domain].append([gene,'yeast'])
-                    #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
+            if domain in domains:
+                d = d+1
+                shared_domains[domain].append([gene,'yeast'])
+                #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
         shared_domains[domain].append(d)
         d=0
     
