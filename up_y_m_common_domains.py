@@ -17,8 +17,8 @@ if(__name__=="__main__"):
     m_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_domains.txt")
     y_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_domains.txt")
 
-    m_pfam = m_pfam_in.readlines()
-    y_pfam = y_pfam_in.readlines()
+    m_pfam = set(i.strip() for i in m_pfam_in.readlines())
+    y_pfam = set(i.strip() for i in y_pfam_in.readlines())
 
     shared_domains = {}
     
