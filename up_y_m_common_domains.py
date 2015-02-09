@@ -58,7 +58,6 @@ if(__name__=="__main__"):
                 shared_domains[domain].append([gene,'yeast'])
                 #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
         shared_domains[domain].append(d)
-        d=0
     
 #        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
 
