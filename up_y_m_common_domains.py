@@ -27,9 +27,6 @@ if(__name__=="__main__"):
     up_y_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
 
     cdt_gene_pfam = {} 
-    up_m_genes = {}
-    up_y_genes = {}
-
     pfam_indices = [n for (n,i) in enumerate(cdt_in.extranames)
                     if(i.endswith("Pfam name"))]
     for gene in cdt_in:
@@ -38,16 +35,12 @@ if(__name__=="__main__"):
             pfam_name_split.update(gene.extra[i].split("|"))
         for name in gene.Name().split("|"):
             cdt_gene_pfam[name]=pfam_name_split
-    
-    for gene in up_m_genes_in.readlines():
-        gene = gene.strip()
-        if gene in cdt_gene_pfam:
-            up_m_genes[gene]=cdt_gene_pfam[gene]
 
-    for gene in up_y_genes_in.readlines():
-        gene = gene.strip()
-        if gene in cdt_gene_pfam:
-            up_y_genes[gene]=cdt_gene_pfam[gene]
+    up_m_genes = dict((gene.strip(), cdt_gene_pfam[gene.strip()])
+                      for gene in up_m_genes_in)
+
+    up_y_genes = dict((gene.strip(), cdt_gene_pfam[gene.strip()])
+                      for gene in up_y_genes_in)
 
     # Determine if the genes with common domains are present in the list
     # of genes sig up in yeast or mycelia.
