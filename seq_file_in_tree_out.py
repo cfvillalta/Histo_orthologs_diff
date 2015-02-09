@@ -8,6 +8,9 @@
 3. Run Lucien using the new HMM.
 '''
 
+import sys
+import os
+
 if(__name__=="__main__"):
     if(len(sys.argv) != 2):
         sys.stderr.write("""Usage: %s directory_in
@@ -16,7 +19,8 @@ if(__name__=="__main__"):
         """)
         sys.exit(0)
     else:
-        for filename in os.listdir(os.getcwd()):
+        dir_in = sys.argv[1]
+        for filename in os.listdir(dir_in):
             print filename
     
 
