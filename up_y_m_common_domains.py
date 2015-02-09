@@ -36,7 +36,8 @@ if(__name__=="__main__"):
         pfam_name_split = set()
         for i in pfam_indices:
             pfam_name_split.update(gene.extra[i].split("|"))
-        cdt_gene_pfam[gene.Name()]=pfam_name_split
+        for name in gene.Name().split("|"):
+            cdt_gene_pfam[name]=pfam_name_split
     
     for gene in up_m_genes_in.readlines():
         gene = gene.strip()
