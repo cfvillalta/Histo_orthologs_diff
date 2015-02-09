@@ -11,6 +11,7 @@
 import sys
 import os
 from GenomeFactory import GenomeFactory
+from subprocess import Popen, PIPE
 
 #1.
 if(__name__=="__main__"):
@@ -39,8 +40,11 @@ if(__name__=="__main__"):
                 gene=f.getGene(gene_split[0])
                 prot_seq = gene.ProteinSequence()
                 prot_fasta.write(prot_seq.FormatFasta(name=gene.Name()))
-
             prot_fasta.close()
-
+            clustalo = Popen(['time', 'clustalo', '-i', '%s%s_G217B_up.fa' %(dir_in,domain), '-o', '%s%s_G217B_up_clustalo.fa' %(dir_in,domain), '--force', '--threads=4'])
+            clustalo.communicate()
+            hmmbuild = Popen(['hmmbuild', '--cpu', '4', '%s%s_G217B_up.hmm' %(dir_in,domain), '%s\
+            %s_G217B_up_clustalo.fa' %(dir_in,domain)])
+            hmmbuild.communicate()
         
 
