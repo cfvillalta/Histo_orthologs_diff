@@ -92,8 +92,8 @@ if(__name__=="__main__"):
             y = 0
             m = 0
             for domain in final_domain_list:
-                del final_domain_list[domain][-1]
+                #del final_domain_list[domain][-1]
                 domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
-                for gene in final_domain_list[domain]:
+                for gene in final_domain_list[domain][:-1]:
                     domain_out.write('%s\n' %("\t".join(gene)))
                 domain_out.close()
