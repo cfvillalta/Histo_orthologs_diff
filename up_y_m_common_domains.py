@@ -45,6 +45,7 @@ if(__name__=="__main__"):
     # Determine if the genes with common domains are present in the list
     # of genes sig up in yeast or mycelia.
 
+    shared_domain_counts = {}
     for domain in shared_domains:
         d=0
         for (gene, domains) in up_m_genes.items():
@@ -57,16 +58,16 @@ if(__name__=="__main__"):
                 d = d+1
                 shared_domains[domain].append([gene,'yeast'])
                 #print '%s\t%s\t%s\tYeast' %(domain,gene,domain_name)
-        shared_domains[domain].append(d)
+        shared_domain_counts[domain] = d
     
 #        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
 
         final_domain_list = {}
-        if shared_domains[domain][-1] >= 2:
-            list = range(0,shared_domains[domain][-1])
+        d = shared_domain_counts[domain]
+        if d >= 2:
             y = 0
             m = 0
-            for gene in list:
+            for gene in xrange(d):
                 if 'yeast' in shared_domains[domain][gene]:
                     y = y +1
                 if 'mycelia' in shared_domains[domain][gene]:
@@ -79,8 +80,7 @@ if(__name__=="__main__"):
             y = 0
             m = 0
             for domain in final_domain_list:
-                #del final_domain_list[domain][-1]
                 domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
-                for gene in final_domain_list[domain][:-1]:
+                for gene in final_domain_list[domain]:
                     domain_out.write('%s\n' %("\t".join(gene)))
                 domain_out.close()
