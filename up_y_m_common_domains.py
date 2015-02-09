@@ -20,8 +20,9 @@ if(__name__=="__main__"):
 
     # Search through yeast and mycelia sig up reg .cdt files and get
     # gene names for genes that have the common domains found in shared_domains
-    
-    cdt_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt")
+
+    from CdtFile import CdtFile
+    cdt_in = CdtFile.fromCdt(open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt"))
     up_m_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
     up_y_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
 
@@ -29,11 +30,13 @@ if(__name__=="__main__"):
     up_m_genes = {}
     up_y_genes = {}
 
-    for gene in cdt_in.readlines():
-        gene=gene.strip()
-        gene_split = gene.split("\t")
-        pfam_name_split = gene_split[14].split("|")
-        cdt_gene_pfam[gene_split[2]]=pfam_name_split
+    pfam_indices = [n for (n,i) in enumerate(cdt_in.extranames)
+                    if(i.endswith("Pfam name"))]
+    for gene in cdt_in:
+        pfam_name_split = set()
+        for i in pfam_indices:
+            pfam_name_split.update(gene.extra[i].split("|"))
+        cdt_gene_pfam[gene.Name()]=pfam_name_split
     
     for gene in up_m_genes_in.readlines():
         gene = gene.strip()
