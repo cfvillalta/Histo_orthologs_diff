@@ -62,7 +62,6 @@ if(__name__=="__main__"):
     
 #        print "%s\t%s" %(shared_domains[domain],shared_domains[domain][-1])
 
-        final_domain_list = {}
         if shared_domain_counts[domain] >= 2:
             y = 0
             m = 0
@@ -74,13 +73,7 @@ if(__name__=="__main__"):
                     m = m +1
 
             if y>=1 and m >=1:
-                final_domain_list[domain]=shared_domains[domain]
-               # print "%s\t%s" %(domain,shared_domains[domain])
-                    
-            y = 0
-            m = 0
-            for domain in final_domain_list:
                 domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
-                for gene in final_domain_list[domain]:
+                for gene in shared_domains[domain]:
                     domain_out.write('%s\n' %("\t".join(gene)))
                 domain_out.close()
