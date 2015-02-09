@@ -1,19 +1,15 @@
 #!/usr/bin/python
-
 """
-Part I
-Input and find common pfam domains between Yeast and Mycelia pfam domain lists for gets up regulated log 1.5 fold or more.
-
-Part II
-Search through yeast and mycelia sig up reg .cdt files and get gene names for genes that have the common domains found in Part I
-
-Part III
-Determine if the genes found in Part II are present in the list of genes sig up in yeast or mycelia.
+Given log2 Y/H expression ratios and domain annotations for 4 Hc
+strains, find domains for which there are both Y _and_ H enriched
+genes, and write lists of (gene, enriched state) for each domain for
+downstream composition analysis.
 """
-
-#Part I
 
 if(__name__=="__main__"):
+    # Input and find common pfam domains between Yeast and Mycelia pfam
+    # domain lists for gets up regulated log 1.5 fold or more.
+
     m_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_domains.txt")
     y_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_domains.txt")
 
@@ -21,8 +17,9 @@ if(__name__=="__main__"):
     y_pfam = set(i.strip() for i in y_pfam_in.readlines())
 
     shared_domains = dict((i,[]) for i in m_pfam.intersection(y_pfam))
-    
-    #PART II
+
+    # Search through yeast and mycelia sig up reg .cdt files and get
+    # gene names for genes that have the common domains found in shared_domains
     
     cdt_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt")
     up_m_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
@@ -48,7 +45,9 @@ if(__name__=="__main__"):
         if gene in cdt_gene_pfam:
             up_y_genes[gene]=cdt_gene_pfam[gene]
 
-    #PART III
+    # Determine if the genes with common domains are present in the list
+    # of genes sig up in yeast or mycelia.
+
     for domain in shared_domains:
         d=0
         for gene in up_m_genes:
