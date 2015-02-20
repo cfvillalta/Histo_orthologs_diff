@@ -46,6 +46,7 @@ if(__name__=="__main__"):
     # of genes sig up in yeast or mycelia.
 
     shared_domain_counts = {}
+    shared_domain_genes = {}
     
     for domain in sorted(shared_domains):
         d=0
@@ -74,11 +75,5 @@ if(__name__=="__main__"):
                     m = m +1
 
             if y>=1 and m >=1:
-                print "%s\t%s\t%s" %(domain,y,m)
- #               domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
-                for gene in shared_domains[domain]:
-                    #domain_out.write('%s\n' %("\t".join(gene)))
-                    print "%s\n" %("\t".join(gene))
-  
-
-#                domain_out.close()
+                shared_domain_genes[domain]=shared_domains[domain]
+print shared_domain_genes
