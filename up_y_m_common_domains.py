@@ -10,8 +10,8 @@ if(__name__=="__main__"):
     # Input and find common pfam domains between Yeast and Mycelia pfam
     # domain lists for gets up regulated log 1.5 fold or more.
 
-    m_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_domains.txt")
-    y_pfam_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_domains.txt")
+    m_pfam_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_domains.txt")
+    y_pfam_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_domains.txt")
 
     m_pfam = set(i.strip() for i in m_pfam_in.readlines())
     y_pfam = set(i.strip() for i in y_pfam_in.readlines())
@@ -22,9 +22,9 @@ if(__name__=="__main__"):
     # gene names for genes that have the common domains found in shared_domains
 
     from CdtFile import CdtFile
-    cdt_in = CdtFile.fromCdt(open("/home/mvoorhie/data/Chris/ThermalAdaptation/s13cMsort.cdt"))
-    up_m_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/M_1.5_predictions.HcG217B.txt")
-    up_y_genes_in = open("/home/mvoorhie/data/Chris/ThermalAdaptation/Y_1.5_predictions.HcG217B.txt")
+    cdt_in = CdtFile.fromCdt(open("/home/cfvillalta/ThermalAdaptation/s13cMsort.cdt"))
+    up_m_genes_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_transcripts.HcG217B.txt")
+    up_y_genes_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_transcripts.HcG217B.txt")
 
     cdt_gene_pfam = {} 
     pfam_indices = [n for (n,i) in enumerate(cdt_in.extranames)
@@ -34,7 +34,7 @@ if(__name__=="__main__"):
         for i in pfam_indices:
             pfam_name_split.update(gene.extra[i].split("|"))
         for name in gene.Name().split("|"):
-            cdt_gene_pfam[name]=pfam_name_split
+            cdt_gene_pfam[gene.extra[2]]=pfam_name_split
 
     up_m_genes = dict((gene.strip(), cdt_gene_pfam[gene.strip()])
                       for gene in up_m_genes_in)
@@ -46,7 +46,8 @@ if(__name__=="__main__"):
     # of genes sig up in yeast or mycelia.
 
     shared_domain_counts = {}
-    for domain in shared_domains:
+    
+    for domain in sorted(shared_domains):
         d=0
         for (gene, domains) in up_m_genes.items():
             if domain in domains:
@@ -73,7 +74,11 @@ if(__name__=="__main__"):
                     m = m +1
 
             if y>=1 and m >=1:
-                domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
+                print "%s\t%s\t%s" %(domain,y,m)
+ #               domain_out = open('%s_gene_up_list.txt' %(domain), 'w')
                 for gene in shared_domains[domain]:
-                    domain_out.write('%s\n' %("\t".join(gene)))
-                domain_out.close()
+                    #domain_out.write('%s\n' %("\t".join(gene)))
+                    print "%s\n" %("\t".join(gene))
+  
+
+#                domain_out.close()

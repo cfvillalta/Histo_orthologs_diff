@@ -70,9 +70,8 @@ if(__name__ == "__main__"):
     # Write unsorted data
         filename = sys.argv[1].split(".cdt")
         cdt.writeCdt(open("%s_aa_ratio.cdt" %(filename[0]),"w"))
-'''
+
     # Cluster on normalized counts
     tree = cdt.cluster(dist = "e", method = "m", cols = range(21,41))
     cdt.writeCdtGtr("HcG217B.composition.norm_em", tree)
-                  
-'''                  
+                                    

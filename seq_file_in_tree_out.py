@@ -24,7 +24,7 @@ if(__name__=="__main__"):
     else:
         dir_in = sys.argv[1]
         for filename in os.listdir(dir_in):
-            file_name_split = filename.split("_")
+            file_name_split = filename.split("_gene")
             domain = file_name_split[0]
             #print domain
             list_open = open("%s/%s" %(dir_in,filename), "rU")
@@ -41,10 +41,5 @@ if(__name__=="__main__"):
                 prot_seq = gene.ProteinSequence()
                 prot_fasta.write(prot_seq.FormatFasta(name=gene.Name()))
             prot_fasta.close()
-            clustalo = Popen(['time', 'clustalo', '-i', '%s%s_G217B_up.fa' %(dir_in,domain), '-o', '%s%s_G217B_up_clustalo.fa' %(dir_in,domain), '--force', '--threads=4'])
-            clustalo.communicate()
-            hmmbuild = Popen(['hmmbuild', '--cpu', '4', '%s%s_G217B_up.hmm' %(dir_in,domain), '%s\
-            %s_G217B_up_clustalo.fa' %(dir_in,domain)])
-            hmmbuild.communicate()
         
 
