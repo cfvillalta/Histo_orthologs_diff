@@ -6,6 +6,12 @@ genes, and write lists of (gene, enriched state) for each domain for
 downstream composition analysis.
 """
 
+import sys
+from CdtFile import CdtFile, CdtRow
+from GenomeFactory import GenomeFactory
+from optparse import OptionParser
+
+
 if(__name__=="__main__"):
     # Input and find common pfam domains between Yeast and Mycelia pfam
     # domain lists for gets up regulated log 1.5 fold or more.
@@ -21,7 +27,6 @@ if(__name__=="__main__"):
     # Search through yeast and mycelia sig up reg .cdt files and get
     # gene names for genes that have the common domains found in shared_domains
 
-    from CdtFile import CdtFile
     cdt_in = CdtFile.fromCdt(open("/home/cfvillalta/ThermalAdaptation/s13cMsort.cdt"))
     up_m_genes_in = open("/home/cfvillalta/ThermalAdaptation/M_1.5_transcripts.HcG217B.txt")
     up_y_genes_in = open("/home/cfvillalta/ThermalAdaptation/Y_1.5_transcripts.HcG217B.txt")
@@ -76,4 +81,25 @@ if(__name__=="__main__"):
 
             if y>=1 and m >=1:
                 shared_domain_genes[domain]=shared_domains[domain]
-print shared_domain_genes
+#print shared_domain_genes
+
+#Copy code in from CompositionHeatmap.py to get amino acid freqs.
+
+# N.B.: Don't want silent out-of-range bugs, so not doing ascii math
+amino_acids = "ACDEFGHIKLMNPQRSTVWY"
+aa2offset = dict((aa,i) for (i,aa) in enumerate(
+    amino_acids))
+for (key,val) in aa2offset.items():
+    aa2offset[key.lower()] = val
+    
+    def composition_vector(s):
+        v = [0.]*20
+        for i in s:
+            try:
+                v[aa2offset[i]] += 1.
+            except KeyError:
+                pass
+            return v
+        
+
+    
