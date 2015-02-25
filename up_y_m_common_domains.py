@@ -101,25 +101,40 @@ if(__name__=="__main__"):
                 shared_domain_genes[domain]=shared_domains[domain]
     #print shared_domain_genes
     f=GenomeFactory()
-    genes =[]
+    genes = []
+    uid=0
     for domain in shared_domain_genes:
         for g in shared_domain_genes[domain]: 
             gene = f.getGene(g[0])
             seq = gene.ProteinSequence()
             #print seq
-            genes.append([gene,seq])
-    #        print seq
+            uid = uid+1
+            if g[1] == 'yeast':
+                genes.append([gene,seq,g[1],domain,uid, 4])
+            else:
+                assert(g[1] == 'mycelia')
+                genes.append([gene,seq,g[1],domain,uid, -4])
+    #print seq
      #       print composition_vector(seq)
-    #print genes
-    cdt = CdtFile(probes = [CdtRow(gid = gene[0].Name(),uniqid = gene[0].Name(),name = gene[0].Name(),ratios = [len(gene[1])]+composition_vector(gene[1]))for gene in genes if(len(gene[1]) > 0)],fieldnames = ["length"]+list(amino_acids),eweights = [1.]*21)
+#    print genes
+    fieldnames = ["morph","length"]+list(amino_acids)
+    print fieldnames
+    cdt = CdtFile(
+        probes = [CdtRow(gid = gene[0].Name(),uniqid = gene[4],name = gene[0].Name(),extra=[gene[2],gene[3]],
+        ratios = [float(gene[5]),len(gene[1])]+composition_vector(gene[1]))
+                  for gene in genes if(len(gene[1]) > 0)],
+        fieldnames = fieldnames,
+        eweights = [1.]*len(fieldnames),
+        extranames = ["morphology", "domain"])
      
      #Normalize counts to length
-    cdt = CdtFile.fromPrototype(cdt,probes = [CdtRow.fromPrototype(i,ratios = i.ratios+[j/float(i.ratios[0]) for j in i[1:]])for i in cdt],eweights = cdt.eweights + [1.]*20,fieldnames = cdt.fieldnames + [j.lower() for j in cdt.fieldnames[1:]])
-     
+    cdt = CdtFile.fromPrototype(cdt,probes = [CdtRow.fromPrototype(i,ratios = i.ratios+[j/float(i.ratios[1]) for j in i[2:]])for i in cdt],eweights = cdt.eweights + [1.]*20,fieldnames = cdt.fieldnames + [j.lower() for j in cdt.fieldnames[2:]])
+    
     # Write unsorted data
     filename = cdt_file.split(".cdt")
     cdt.writeCdt(open("%s_aa_ratio.cdt" %(filename[0]),"w"))
-     
+    
     #Cluster on normalized counts
-    tree = cdt.cluster(dist = "e", method = "m", cols = range(21,41))
+    tree = cdt.cluster(dist = "e", method = "m", cols = range(22,42))
     cdt.writeCdtGtr("%s.composition.norm_em" %(filename[0]), tree)
+
