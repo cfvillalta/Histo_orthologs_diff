@@ -18,7 +18,7 @@ amino_acids = "ACDEFGHIKLMNPQRSTVWY"
 aa2offset = dict((aa,i) for (i,aa) in enumerate(amino_acids))
 for (key,val) in aa2offset.items():
     aa2offset[key.lower()] = val
-    
+
 def composition_vector(s):
     v = [0.]*20
     for i in s:
@@ -27,6 +27,22 @@ def composition_vector(s):
         except KeyError:
             pass
     return v
+
+ivywrel_aa = "IVYWREL"
+ivywrel2offset = dict((aa,i) for (i,aa) in enumerate(ivywrel_aa))
+for (key,val) in ivywrel2offset.items():
+    ivywrel2offset[key.lower()] = val
+
+    
+def ivywrel_comp_vector(s):
+    v = [0.]*7
+    for i in s:
+        try:
+            v[ivywrel2offset[i]] += 1.
+        except KeyError:
+            pass
+    return v
+
 
 if(__name__=="__main__"):
     # Input and find common pfam domains between Yeast and Mycelia pfam
@@ -109,26 +125,30 @@ if(__name__=="__main__"):
             seq = gene.ProteinSequence()
             #print seq
             uid = uid+1
+            ivywrel = sum(ivywrel_comp_vector(seq))
+            #print seq
+            
             if g[1] == 'yeast':
-                genes.append([gene,seq,g[1],domain,uid, 4])
+                genes.append([gene,seq,g[1],domain,uid, 4,ivywrel])
             else:
                 assert(g[1] == 'mycelia')
-                genes.append([gene,seq,g[1],domain,uid, -4])
+                genes.append([gene,seq,g[1],domain,uid, -4,ivywrel])
     #print seq
-     #       print composition_vector(seq)
-#    print genes
-    fieldnames = ["morph","length"]+list(amino_acids)
-    print fieldnames
+            #print composition_vector(seq)
+
+            #ratios = [-4, len(seq)] + composition_vector(seq) + [ivywrel]
+
+            #print ratios
+    fieldnames = ["morph","length"]+list(amino_acids)+ ["IVYWREL"]
+#    print len(fieldnames)
     cdt = CdtFile(
-        probes = [CdtRow(gid = gene[0].Name(),uniqid = gene[4],name = gene[0].Name(),extra=[gene[2],gene[3]],
-        ratios = [float(gene[5]),len(gene[1])]+composition_vector(gene[1]))
-                  for gene in genes if(len(gene[1]) > 0)],
+        probes = [CdtRow(gid = gene[0].Name(),uniqid = gene[4],name = gene[0].Name(),extra=[gene[2],gene[3]],ratios = [float(gene[5]),len(gene[1])]+composition_vector(gene[1])+[gene[6]]) for gene in genes if(len(gene[1]) > 0)],
         fieldnames = fieldnames,
-        eweights = [1.]*len(fieldnames),
+        eweights = [1.]*23,
         extranames = ["morphology", "domain"])
      
      #Normalize counts to length
-    cdt = CdtFile.fromPrototype(cdt,probes = [CdtRow.fromPrototype(i,ratios = i.ratios+[j/float(i.ratios[1]) for j in i[2:]])for i in cdt],eweights = cdt.eweights + [1.]*20,fieldnames = cdt.fieldnames + [j.lower() for j in cdt.fieldnames[2:]])
+    cdt = CdtFile.fromPrototype(cdt,probes = [CdtRow.fromPrototype(i,ratios = i.ratios+[j/float(i.ratios[1]) for j in i[2:]])for i in cdt],eweights = cdt.eweights + [1.]*21,fieldnames = cdt.fieldnames + [j.lower() for j in cdt.fieldnames[2:]])
     
     # Write unsorted data
     filename = cdt_file.split(".cdt")
@@ -137,4 +157,8 @@ if(__name__=="__main__"):
     #Cluster on normalized counts
     tree = cdt.cluster(dist = "e", method = "m", cols = range(22,42))
     cdt.writeCdtGtr("%s.composition.norm_em" %(filename[0]), tree)
+
+    #Cluster on normalized counts
+    tree = cdt.cluster(dist = "e", method = "m", cols = [43])
+    cdt.writeCdtGtr("%s.composition.ivywrel" %(filename[0]), tree)
 
