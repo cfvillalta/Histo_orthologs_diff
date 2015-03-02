@@ -51,8 +51,9 @@ if(__name__=="__main__"):
     aa_mean = []
     aa_range=range(0,len(amino_acids))
     #for x in aa_range:
-    [aa_mean.append(np.mean(aa_cm[:,x])) for x in aa_range]
+    [aa_mean.append(np.mean(aa_rm[:,x])) for x in aa_range]
        #need to mean normalize
+    bp_aa_ratios_norm = [[] for _ in aa_range]
     bp_aa_ratios = [[] for _ in aa_range]
     #print bp_aa_ratios
     for x in aa_range:
@@ -63,38 +64,19 @@ if(__name__=="__main__"):
             aa_norm=aa[x]-aa_mean[x]
             #print aa_norm
            # print x
-            bp_aa_ratios[x].append(aa_norm)
+            bp_aa_ratios_norm[x].append(aa_norm)
+            bp_aa_ratios[x].append(aa[x])
     
-    print bp_aa_ratios
+    #print bp_aa_ratios
     fig=plt.figure()
     ax=fig.add_subplot(111)
-    bp=ax.boxplot(bp_aa_ratios)
+    bp=ax.boxplot(bp_aa_ratios_norm)
+    ax.set_xticklabels(amino_acids)
     fig.savefig('test.pdf')
+
+    fig2=plt.figure()
+    ax2=fig2.add_subplot(111)
+    bp2=ax2.boxplot(bp_aa_ratios)
+    ax2.set_xticklabels(amino_acids)
+    fig2.savefig('test2.pdf')
     
-
-
-'''
-#print aa_data
-A = []
-for aa in aa_data:
-    #print aa
-    A.append(aa[2][0])
-
-A_np = np.array(A)
-mean = np.mean(A_np)
-median = np.median(A_np)
-print "mean = %s" %(mean)
-print "median = %s" %(median)
-x = np.random.normal(0,1,1000)
-#print x
-fig = plt.figure()
-ax = fig.add_subplot(111)
-numBins = 100
-histo=ax.hist(A,numBins,color='green',alpha=0.8)
-fig.savefig('fig1.pdf')
-
-fig2 =plt.figure()
-ax2=fig2.add_subplot(111)
-bp=ax2.boxplot(A)
-fig2.savefig('fig2.pdf')
-'''
