@@ -69,14 +69,13 @@ if(__name__=="__main__"):
     
     #print bp_aa_ratios
     fig=plt.figure()
-    ax=fig.add_subplot(111)
+    ax=fig.add_subplot(211)
     bp=ax.boxplot(bp_aa_ratios_norm)
     ax.set_xticklabels(amino_acids)
-    fig.savefig('test.pdf')
+    #fig.savefig('test.pdf')
 
-    fig2=plt.figure()
-    ax2=fig2.add_subplot(111)
-    bp2=ax2.boxplot(bp_aa_ratios)
-    ax2.set_xticklabels(amino_acids)
-    fig2.savefig('test2.pdf')
+    ax=fig.add_subplot(212)
+    bp=ax.boxplot(bp_aa_ratios)
+    ax.set_xticklabels(amino_acids)
+    fig.savefig('test.pdf')
     
