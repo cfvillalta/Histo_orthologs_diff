@@ -20,7 +20,7 @@ for (key,val) in aa2offset.items():
             except KeyError:
                 pass
         return v
-#module input is hmmaling stockholm file, and outputs a list of sublists: name, aa_counts, aa_rations, aa_norm_ratios.                         
+#module input is hmmaling stockholm file, and outputs a list of sublists: name, aa_ratios, aa_norm_ratios.                         
 def aa_mean_normilization(hmmalign):
 #if(__name__=="__main__"):
 #    hmmalign = open("/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/Lucien_Zn_clu/Zn_clus.hmmalign"
@@ -65,7 +65,7 @@ def aa_mean_normilization(hmmalign):
            # print x
             bp_aa_ratios_norm[x].append(aa_norm)
             bp_aa_ratios[x].append(aa[x])
-    return(names, aa_cm, aa_r, aa_norm)
+    return(names, bp_aa_ratios, bp_aa_norm)
 '''    
     #print bp_aa_ratios
     fig=plt.figure()
