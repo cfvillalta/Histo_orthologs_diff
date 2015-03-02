@@ -65,7 +65,7 @@ def aa_mean_normilization(hmmalign):
            # print x
             bp_aa_ratios_norm[x].append(aa_norm)
             bp_aa_ratios[x].append(aa[x])
-    return(names, bp_aa_ratios, bp_aa_norm)
+    return(names, bp_aa_ratios, bp_aa_ratios_norm)
 '''    
     #print bp_aa_ratios
     fig=plt.figure()
