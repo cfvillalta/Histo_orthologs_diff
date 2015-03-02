@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib as mpl
 mpl.use('agg')
 import matplotlib.pyplot as plt
+from ClustalTools import MultipleAlignment
 
 # N.B.: Don't want silent out-of-range bugs, so not doing ascii math
 amino_acids = "ACDEFGHIKLMNPQRSTVWY"
@@ -19,12 +20,10 @@ for (key,val) in aa2offset.items():
             except KeyError:
                 pass
         return v
-                                                
-
-
-from ClustalTools import MultipleAlignment
-if(__name__=="__main__"):
-    hmmalign = open("/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/Lucien_Zn_clu/Zn_clus.hmmalign")
+#module input is hmmaling stockholm file, and outputs a list of sublists: name, aa_counts, aa_rations, aa_norm_ratios.                         
+def aa_mean_normilization(hmmalign):
+#if(__name__=="__main__"):
+#    hmmalign = open("/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/Lucien_Zn_clu/Zn_clus.hmmalign"
 #    hmmalign = open("/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/Lucien_Zn_clu/Zn_clus_test.stockholm")
     alignment = MultipleAlignment.fromStockholm(hmmalign)
 #    print alignment.seqnames
@@ -66,7 +65,8 @@ if(__name__=="__main__"):
            # print x
             bp_aa_ratios_norm[x].append(aa_norm)
             bp_aa_ratios[x].append(aa[x])
-    
+    return(names, aa_cm, aa_r, aa_norm)
+'''    
     #print bp_aa_ratios
     fig=plt.figure()
     ax=fig.add_subplot(211)
@@ -78,4 +78,4 @@ if(__name__=="__main__"):
     bp=ax.boxplot(bp_aa_ratios)
     ax.set_xticklabels(amino_acids)
     fig.savefig('test.pdf')
-    
+'''    
