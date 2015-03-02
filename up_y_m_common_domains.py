@@ -119,7 +119,11 @@ if(__name__=="__main__"):
     f=GenomeFactory()
     genes = []
     uid=0
+    #write domains to txt file.
+    domain_file = open("yeast_mycelia_pfam_up.txt", "w")
+    
     for domain in shared_domain_genes:
+        domain_file.write("%s\n" %(domain))
         for g in shared_domain_genes[domain]: 
             gene = f.getGene(g[0])
             seq = gene.ProteinSequence()
@@ -127,12 +131,12 @@ if(__name__=="__main__"):
             uid = uid+1
             ivywrel = sum(ivywrel_comp_vector(seq))
             #print seq
-            
             if g[1] == 'yeast':
                 genes.append([gene,seq,g[1],domain,uid, 4,ivywrel])
             else:
                 assert(g[1] == 'mycelia')
                 genes.append([gene,seq,g[1],domain,uid, -4,ivywrel])
+    domain_file.close()
     #print seq
             #print composition_vector(seq)
 
