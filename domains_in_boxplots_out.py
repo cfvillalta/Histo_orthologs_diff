@@ -1,6 +1,8 @@
 #!/usr/bin/python
 '''
 Will input list of domains, run lucien with histo transcriptome data for each domain, from each hmm domain alignment will get amino acid ratios and normalize by mean. Plot unnormalized and normalized data boxplots.
+
+-L force runs lucien.
 '''
 import sys
 import re
@@ -9,10 +11,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from subprocess import Popen, PIPE
 import os
-
+from ClustalTools import MultipleAlignment
 if(__name__=="__main__"):
-#    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/yeast_mycelia_pfam_up.txt"
-    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/pfam_test.txt"
+    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/yeast_mycelia_pfam_up.txt"
+#    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/pfam_test.txt"
 
     domain_list = open(domain_in)
 
@@ -53,6 +55,16 @@ if(__name__=="__main__"):
             bp_cord.append([x,y])
     #print bp_cord
 
+    seq_counts=[]
+    for x in range(domains_len):
+        if domains_aa_norm[x] != 'None':
+            stockholm = open("%s.hmmalign" %(domains[x]))
+            alignment = MultipleAlignment.fromStockholm(stockholm)
+            print len(alignment.seqnames)
+            seq_counts.append(len(alignment.seqnames))
+        else:
+            seq_counts.append(0)
+    print seq_counts
     f, ax = plt.subplots(10,10,sharex=True,sharey=True)
     f.set_size_inches(40,40)
     plt.tight_layout()
@@ -60,10 +72,11 @@ if(__name__=="__main__"):
     for x in range(domains_len):
         if domains_aa_norm[x] != 'None':
             ax[bp_cord[x][0],bp_cord[x][1]].boxplot(domains_aa_norm[x][2])
-            #print domains[x]
-            ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
+            print domains[x]
+            ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
         else:
+            print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
     f.savefig('mean_normalized.pdf')
