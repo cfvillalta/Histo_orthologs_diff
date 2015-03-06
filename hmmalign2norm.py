@@ -2,7 +2,6 @@
 
 import numpy as np
 import matplotlib as mpl
-mpl.use('agg')
 import matplotlib.pyplot as plt
 from ClustalTools import MultipleAlignment
 
