@@ -12,9 +12,10 @@ import matplotlib.pyplot as plt
 from subprocess import Popen, PIPE
 import os
 from ClustalTools import MultipleAlignment
+
 if(__name__=="__main__"):
     domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/yeast_mycelia_pfam_up.txt"
-#    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/pfam_test.txt"
+    domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/pfam_test.txt"
 
     domain_list = open(domain_in)
 
@@ -48,23 +49,25 @@ if(__name__=="__main__"):
             Lucien.communicate()
             print 'Lucien run done.'
 
+    #domain seqs graphing portion.
+
     bp_range = range(10)
     bp_cord = []
     for x in bp_range:
         for y in bp_range:
             bp_cord.append([x,y])
-    #print bp_cord
+    
 
     seq_counts=[]
     for x in range(domains_len):
         if domains_aa_norm[x] != 'None':
             stockholm = open("%s.hmmalign" %(domains[x]))
             alignment = MultipleAlignment.fromStockholm(stockholm)
-            print len(alignment.seqnames)
+#            print len(alignment.seqnames)
             seq_counts.append(len(alignment.seqnames))
         else:
             seq_counts.append(0)
-    print seq_counts
+#    print seq_counts
     f, ax = plt.subplots(10,10,sharex=True,sharey=True)
     f.set_size_inches(40,40)
     plt.tight_layout()
@@ -72,12 +75,32 @@ if(__name__=="__main__"):
     for x in range(domains_len):
         if domains_aa_norm[x] != 'None':
             ax[bp_cord[x][0],bp_cord[x][1]].boxplot(domains_aa_norm[x][2])
-            print domains[x]
+ #           print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
         else:
-            print domains[x]
+#            print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
     f.savefig('mean_normalized.pdf')
 
+    #up in yeast and mycelia graphing portion.
+    
+    genes_in = open("/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/yeast_mycelia_pfam_up_domain_seq.txt")
+    genes = [i.strip() for i in genes_in.readlines()]
+    genes_s = [i.split("\t") for i in genes]
+
+#    for gene in genes_s:
+ #       print gene
+
+
+    for x in range(domains_len):
+        print x
+        print domains[x]
+        for gene in genes_s:
+            #print "%s\t%s" %(domains[x],gene[1])
+            if domains[x] == gene[1]:
+                print gene
+                
+            
+             
