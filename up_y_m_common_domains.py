@@ -121,7 +121,7 @@ if(__name__=="__main__"):
     uid=0
     #write domains to txt file.
     domain_file = open("yeast_mycelia_pfam_up.txt", "w")
-    
+    domain_gene_file = open("yeast_mycelia_pfam_up_domain_seq.txt", "w")
     for domain in shared_domain_genes:
         domain_file.write("%s\n" %(domain))
         for g in shared_domain_genes[domain]: 
@@ -131,12 +131,18 @@ if(__name__=="__main__"):
             uid = uid+1
             ivywrel = sum(ivywrel_comp_vector(seq))
             #print seq
+            domain_gene_file.write("%s\t%s\t%s\n" %(gene,domain,g[1]))
             if g[1] == 'yeast':
                 genes.append([gene,seq,g[1],domain,uid, 4,ivywrel])
             else:
                 assert(g[1] == 'mycelia')
                 genes.append([gene,seq,g[1],domain,uid, -4,ivywrel])
     domain_file.close()
+    domain_gene_file.close()
+
+
+
+'''
     #print seq
             #print composition_vector(seq)
 
@@ -165,4 +171,4 @@ if(__name__=="__main__"):
     #Cluster on normalized counts
     tree = cdt.cluster(dist = "e", method = "m", cols = [43])
     cdt.writeCdtGtr("%s.composition.ivywrel" %(filename[0]), tree)
-
+'''
