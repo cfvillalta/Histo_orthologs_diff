@@ -48,10 +48,10 @@ def aa_mean_normilization(hmmalign):
        #need to mean normalize
     bp_aa_ratios_norm = [[] for _ in aa_range]
     bp_aa_ratios = [[] for _ in aa_range]
-    aa_mean_list = [[] for _ in aa_range]
+    aa_mean_list = []
     #print bp_aa_ratios
     for x in aa_range:
-        aa_mean_list[x].append(aa_mean[x])
+        aa_mean_list.append(aa_mean[x])
         for aa in aa_ratios:  
             aa_norm=aa[x]-aa_mean[x]
             bp_aa_ratios_norm[x].append(aa_norm)
