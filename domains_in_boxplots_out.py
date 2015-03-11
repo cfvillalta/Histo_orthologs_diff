@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 '''
 Will input list of domains, run lucien with histo transcriptome data for each domain, from each hmm domain alignment will get amino acid ratios and normalize by mean. Plot unnormalized and normalized data boxplots.
 
@@ -7,11 +7,13 @@ Will input list of domains, run lucien with histo transcriptome data for each do
 import sys
 import re
 from hmmalign2norm import aa_mean_normilization
+from hmmalign2norm import aa_mean_gene
 import numpy as np
 import matplotlib.pyplot as plt
 from subprocess import Popen, PIPE
 import os
 from ClustalTools import MultipleAlignment
+import random
 
 if(__name__=="__main__"):
     domain_in = "/home/cfvillalta/ThermalAdaptation/thermal_domain_ratio_20150226/yeast_mycelia_pfam_up.txt"
@@ -61,7 +63,7 @@ if(__name__=="__main__"):
     seq_counts=[]
     for x in range(domains_len):
         if domains_aa_norm[x] != 'None':
-            stockholm = open("%s.hmmalign" %(domains[x]))
+            stockholm = open("%s.hmmalign" %(domains[x])) 
             alignment = MultipleAlignment.fromStockholm(stockholm)
 #            print len(alignment.seqnames)
             seq_counts.append(len(alignment.seqnames))
@@ -90,17 +92,61 @@ if(__name__=="__main__"):
     genes = [i.strip() for i in genes_in.readlines()]
     genes_s = [i.split("\t") for i in genes]
 
-#    for gene in genes_s:
- #       print gene
+    #list of lists name of gene and amino acid frequencies.
+
+    f1, ax1 = plt.subplots(10,10,sharex=True,sharey=True)
+    f1.set_size_inches(50,50)
+    plt.setp(ax1,xticks=range(len(amino_acids)))
+    plt.ylim(-0.2,1)
+    #ax1=plt.gca()
+    #f1.tight_layout()
 
 
     for x in range(domains_len):
-        print x
+        goi = []
+        #print x
         print domains[x]
-        for gene in genes_s:
-            #print "%s\t%s" %(domains[x],gene[1])
-            if domains[x] == gene[1]:
-                print gene
-                
-            
-             
+        if domains_aa_norm[x] != 'None':
+            #print hmmalign
+            medians = []
+            for aa in range(len(amino_acids)):
+                #print amino_acids[aa]
+                #print domains_aa_norm[x][2][aa]
+                median = np.median(np.array(domains_aa_norm[x][2][aa]))
+                # print median
+                medians.append(median)
+
+            domains_aa_norm[x].append(medians)
+
+            for gene in range(len(genes_s)):
+
+                #print "%s\t%s" %(domains[x],gene[1])
+                if domains[x] == genes_s[gene][1]:
+                    #print "should be present %s" %( genes_s[gene][0])
+                    #print domains_aa_norm[x][0]
+                    for n in range(len(domains_aa_norm[x][0])):
+                        
+                        #print domains_aa_norm[x][0][n]
+                        if genes_s[gene][0] == domains_aa_norm[x][0][n]:
+                            genes_s[gene].append(domains[x])
+                            goi.append(genes_s[gene]) 
+        if not goi:            
+            print 'None'
+        else:
+            gene_aa_ratios = aa_mean_gene(goi)
+            for aa in range(len(amino_acids)):
+                a=aa-.15
+                b=aa+.15
+                x_axis = [random.uniform(a,b) for p in range(0, len(gene_aa_ratios))]
+
+                for g in range(len(gene_aa_ratios)):
+                    ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(domains_aa_norm[x][4][aa]),'g--')
+                    if gene_aa_ratios[g][2] == 'mycelia':
+                        #print 'mycelia'
+                        ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'bo')
+                    elif gene_aa_ratios[g][2] == 'yeast':  
+                        #print 'yeast'
+                        ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'ro')
+        ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
+        ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
+    f1.savefig('mean_normalized_goi.pdf')
