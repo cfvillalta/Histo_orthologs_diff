@@ -124,10 +124,12 @@ if(__name__=="__main__"):
     domain_gene_file = open("yeast_mycelia_pfam_up_domain_seq.txt", "w")
     for domain in shared_domain_genes:
         domain_file.write("%s\n" %(domain))
+        domain_fa = open('%s_G217B_up.fa' %(domain),'w')
         for g in shared_domain_genes[domain]: 
             gene = f.getGene(g[0])
             seq = gene.ProteinSequence()
-            #print seq
+            #print ">%s\n%s" %(g[0],seq)
+            domain_fa.write(">%s\n%s\n" %(g[0],seq))
             uid = uid+1
             ivywrel = sum(ivywrel_comp_vector(seq))
             #print seq
