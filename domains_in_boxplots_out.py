@@ -138,9 +138,8 @@ if(__name__=="__main__"):
                 a=aa-.15
                 b=aa+.15
                 x_axis = [random.uniform(a,b) for p in range(0, len(gene_aa_ratios))]
-
+                ax1[bp_cord[x][0],bp_cord[x][1]].plot(aa,(domains_aa_norm[x][4][aa]),'g_',ms=10,mew=5)
                 for g in range(len(gene_aa_ratios)):
-                    ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(domains_aa_norm[x][4][aa]),'g--')
                     if gene_aa_ratios[g][2] == 'mycelia':
                         #print 'mycelia'
                         ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'bo')
@@ -150,3 +149,5 @@ if(__name__=="__main__"):
         ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
         ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
     f1.savefig('mean_normalized_goi.pdf')
+
+
