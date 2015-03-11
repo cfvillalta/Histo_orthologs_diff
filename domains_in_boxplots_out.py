@@ -32,7 +32,7 @@ if(__name__=="__main__"):
         run_lucien = force_lucien.search(str(sys.argv))
         if run_lucien: 
             print 'running Lucien.py on %s, %s out of %s' %(domain,num,domains_len)
-            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/', '-A', '/home/cfvillalta/ThermalAdaptation/thermo_genes_test/%s_G217B_up.fa' %(domain), '-E', '0.01'],stdout=PIPE)
+            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/', '-A', '/home/cfvillalta/ThermalAdaptation/thermo_genes_test/%s_G217B_up.fa' %(domain), '-E', '0.01', '-H', '/usr/local/bin/hmmsearch'],stdout=PIPE)
             Lucien.communicate()
             print 'Lucien run done.'
 
@@ -47,7 +47,7 @@ if(__name__=="__main__"):
                 domains_aa_norm.append(aa_mean_norm)            
         else:
             print 'running Lucien.py on %s, %s out of %s' %(domain,num,domains_len)
-            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/','-A', '/home/cfvillalta/ThermalAdaptation/thermo_genes_test/%s_G217B_up.fa' %(domain), '-E', '0.01'],stdout=PIPE)
+            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/','-A', '/home/cfvillalta/ThermalAdaptation/thermo_genes_test/%s_G217B_up.fa' %(domain), '-E', '0.01', '-H', '/usr/local/bin/hmmsearch'],stdout=PIPE)
             Lucien.communicate()
             print 'Lucien run done.'
 
@@ -72,7 +72,7 @@ if(__name__=="__main__"):
 #    print seq_counts
     f, ax = plt.subplots(10,10,sharex=True,sharey=True)
     f.set_size_inches(40,40)
-    plt.tight_layout()
+    #plt.tight_layout()
     amino_acids = ['A','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y']
     for x in range(domains_len):
         if domains_aa_norm[x] != 'None':
@@ -147,7 +147,7 @@ if(__name__=="__main__"):
                     elif gene_aa_ratios[g][2] == 'yeast':  
                         #print 'yeast'
                         ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'ro')
-        ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
+        ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
         ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
     f1.savefig('mean_normalized_goi.pdf')
 
