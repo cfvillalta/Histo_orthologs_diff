@@ -25,7 +25,8 @@ if(__name__=="__main__"):
     domains_aa_norm = []
     domains_len=len(domains)
     num=0
-    dir = os.getcwd()
+    dir=os.getcwd()
+    #print '%s/%s_G217B_up.fa' %(dir,domains[1])
     #print dir
     for domain in domains:
         num=num+1
@@ -49,7 +50,7 @@ if(__name__=="__main__"):
                 domains_aa_norm.append(aa_mean_norm)            
         else:
             print 'running Lucien.py on %s, %s out of %s' %(domain,num,domains_len)
-            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/','-A', '/%s_G217B_up.fa' %(domain), '-E', '0.01', '-H', '/usr/local/bin/hmmsearch', '-t', 'none'],stdout=PIPE)
+            Lucien = Popen(['Lucien.py','-a', '-D', domain, '-G', '-g', '/home/cfvillalta/AssembledTranscriptomes/ForLucien/','-A', '%s/%s_G217B_up.fa' %(domain), '-E', '0.01', '-H', '/usr/local/bin/hmmsearch', '-t', 'none'],stdout=PIPE)
             Lucien.communicate()
             print 'Lucien run done.'
 
