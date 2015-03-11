@@ -83,7 +83,7 @@ if(__name__=="__main__"):
         else:
 #            print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
-            ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
+            ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
     f.savefig('mean_normalized.pdf')
 
     #up in yeast and mycelia graphing portion.
@@ -98,6 +98,7 @@ if(__name__=="__main__"):
     f1.set_size_inches(50,50)
     plt.setp(ax1,xticks=range(len(amino_acids)))
     plt.ylim(-0.2,1)
+    
     #ax1=plt.gca()
     #f1.tight_layout()
 
@@ -147,7 +148,7 @@ if(__name__=="__main__"):
                         #print 'yeast'
                         ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'ro')
         ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
-        ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
+        ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
     f1.savefig('mean_normalized_goi.pdf')
 
 
