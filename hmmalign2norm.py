@@ -35,9 +35,6 @@ def aa_mean_normilization(hmmalign):
         #print "%s\n%s" %(name, "".join(seq))
         aa_c = composition_vector(seq)
         aa_r = [float(aa/sum(aa_c)) for aa in aa_c]
-        #print aa_ratios
-        #print aa_counts
-        #print sum(aa_counts)
         names.append(name)
         aa_counts.append(aa_c)
         aa_ratios.append(aa_r)
@@ -51,20 +48,16 @@ def aa_mean_normilization(hmmalign):
        #need to mean normalize
     bp_aa_ratios_norm = [[] for _ in aa_range]
     bp_aa_ratios = [[] for _ in aa_range]
-    aa_mean = [[] for _ in aa_range]
+    aa_mean_list = [[] for _ in aa_range]
     #print bp_aa_ratios
     for x in aa_range:
+        aa_mean_list[x].append(aa_mean[x])
         for aa in aa_ratios:  
-            #print amino_acids[x]
-            #print aa[x]
-            #print aa_mean[x]
             aa_norm=aa[x]-aa_mean[x]
-            #print aa_norm
-           # print x
             bp_aa_ratios_norm[x].append(aa_norm)
             bp_aa_ratios[x].append(aa[x])
-            aa_mean[x].append(aa_mean[x])
-    return([names, bp_aa_ratios, bp_aa_ratios_norm,aa_mean])
+            
+    return([names, bp_aa_ratios, bp_aa_ratios_norm,aa_mean_list])
 
 def aa_mean_gene(goi):
     goi_out = []
@@ -96,22 +89,11 @@ def aa_mean_gene(goi):
         aa_rm = np.array(aa_ratios)
         aa_mean = []
         aa_range=range(0,len(amino_acids))
-    #for  in aa_range:
-        
-        #need to mean normalize
-        
-        bp_aa_ratios = [[] for _ in aa_range]
-        #print bp_aa_ratios
+        bp_aa_ratios = []
+    
         for x in aa_range:
             for aa in aa_ratios:  
-                #print amino_acids[x]
-                #print aa[x]
-                #print aa_mean[x]
-                
-                #print aa_norm
-                #print x
-                
-                bp_aa_ratios[x].append(aa[x])
+                 bp_aa_ratios.append(aa[x])
         goi_out.append([names, bp_aa_ratios,g[2]])
     
     return(goi_out)
