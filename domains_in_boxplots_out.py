@@ -75,6 +75,10 @@ if(__name__=="__main__"):
 #    print seq_counts
     f, ax = plt.subplots(10,10,sharex=True,sharey=True)
     f.set_size_inches(40,40)
+    plt.ylim(-0.2,1)
+    f3,ax3 = plt.subplots(10,10,sharex=True,sharey=True)
+    f3.set_size_inches(40,40)
+    plt.ylim(-0.2,1)
     #plt.tight_layout()
     amino_acids = ['A','C','D','E','F','G','H','I','K','L','M','N','P','Q','R','S','T','V','W','Y']
     for x in range(domains_len):
@@ -83,11 +87,21 @@ if(__name__=="__main__"):
  #           print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
+
+            ax3[bp_cord[x][0],bp_cord[x][1]].boxplot(domains_aa_norm[x][1])
+ #           print domains[x]
+            ax3[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
+            ax3[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids)
         else:
-#            print domains[x]
             ax[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
             ax[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
+
+            ax3[bp_cord[x][0],bp_cord[x][1]].set_title('%s' %(domains[x]))
+            ax3[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
     f.savefig('mean_normalized.pdf')
+    f3.savefig('mean_nonnormalized.pdf')
+    
+
 
     #up in yeast and mycelia graphing portion.
     
@@ -98,9 +112,15 @@ if(__name__=="__main__"):
     #list of lists name of gene and amino acid frequencies.
 
     f1, ax1 = plt.subplots(10,10,sharex=True,sharey=True)
-    f1.set_size_inches(50,50)
+    f1.set_size_inches(40,40)
     plt.setp(ax1,xticks=range(len(amino_acids)))
     plt.ylim(-0.2,1)
+
+    f2, ax2 = plt.subplots(10,10,sharex=True,sharey=True)
+    f2.set_size_inches(40,40)
+    plt.setp(ax2,xticks=range(len(amino_acids)))
+    plt.ylim(-0.2,1)
+    
     
     #ax1=plt.gca()
     #f1.tight_layout()
@@ -143,15 +163,20 @@ if(__name__=="__main__"):
                 b=aa+.15
                 x_axis = [random.uniform(a,b) for p in range(0, len(gene_aa_ratios))]
                 ax1[bp_cord[x][0],bp_cord[x][1]].plot(aa,(domains_aa_norm[x][4][aa]),'g_',ms=10,mew=5)
+                ax2[bp_cord[x][0],bp_cord[x][1]].plot(aa,(domains_aa_norm[x][4][aa]),'g_',ms=10,mew=5)
                 for g in range(len(gene_aa_ratios)):
                     if gene_aa_ratios[g][2] == 'mycelia':
                         #print 'mycelia'
                         ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'bo')
+                        ax2[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]),'bo')
                     elif gene_aa_ratios[g][2] == 'yeast':  
                         #print 'yeast'
                         ax1[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]-domains_aa_norm[x][3][aa]),'ro')
+                        ax2[bp_cord[x][0],bp_cord[x][1]].plot(x_axis[g],(gene_aa_ratios[g][1][aa]),'ro')
         ax1[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
         ax1[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
+        ax2[bp_cord[x][0],bp_cord[x][1]].set_title('%s - %s seqs' %(domains[x],seq_counts[x]))
+        ax2[bp_cord[x][0],bp_cord[x][1]].set_xticklabels(amino_acids,visible=True)
     f1.savefig('mean_normalized_goi.pdf')
-
+    f2.savefig('mean_nonnormalized_goi.pdf')
 
