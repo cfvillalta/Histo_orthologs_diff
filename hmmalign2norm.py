@@ -105,7 +105,7 @@ def aa_ratio_data(domain):
     
     alignment = MultipleAlignment.fromStockholm(hmmalign)
     ref= alignment.colAnnotations
-    print ref.keys()
+    #print ref.keys()
     x_indices = [n for (n,i) in enumerate(ref['RF']) if (i=="x")]
     #print x_indices
                   
@@ -130,8 +130,8 @@ def aa_ratio_data(domain):
     [aa_mean.append(np.mean(aa_rm[:,x])) for x in range(len(amino_acids))]
 
     
-    print len(amino_acids)
-    print aa_mean
+    #print len(amino_acids)
+    #print aa_mean
     for x in range(len(domain_out)):
         aa_norm_ratios = []
         for aa in range(len(amino_acids)):
@@ -142,6 +142,6 @@ def aa_ratio_data(domain):
         
         
 #hmmalign =open("SMC_N.hmmalign")
-print aa_ratio_data("SMC_N")
+#print aa_ratio_data("SMC_N")
 #print aa_mean_gene('HISTO_DM.Contig933.Fgenesh_Aspergillus.157.final_new', hmmalign)
 #print aa_mean_gene('HISTO_DA.Contig93-snap.315.final_new', hmmalign)
